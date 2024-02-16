@@ -5,48 +5,57 @@ using System.Text.RegularExpressions;
 namespace Algrorithm {
 public static class Algrorithm {
 
-private static void qSort(Array input) {
-    Array.Sort(input);
+//private static void qSort(out Array input) {
+    //Array.Sort(input);
+
+//}
+
+private static string process(in string input) {
+    var temp = input.ToCharArray();
+    if (input.Length % 2 == 0) {
+        Array.Reverse(temp, 0, temp.Length / 2);
+        Array.Reverse(temp, temp.Length / 2, temp.Length / 2);
+        return new string(temp);
+    } else {
+        Array.Reverse(temp);
+        return new string(temp) + input;
+    }
 }
 
-public static string? flipAndDuplex(string? input) {
+public static string? flipAndDuplex(in string? input) {
     if (input == null) return null;
     var output = new string("");
-    var tempArrayOutput = input.ToCharArray();
-    var extend = new string("");
 
-    for (int i = 0; i < tempArrayOutput.Length; i++) 
-        if ((tempArrayOutput[i] < 'a') || (tempArrayOutput[i] > 'z')) 
-            extend += $"Неверный символ \"{tempArrayOutput[i]}\" на позиции {i+1}\n";
-    if (extend.Length != 0) throw new Exception(extend); 
-
-    if (input.Length % 2 == 0) {
-        Array.Reverse(tempArrayOutput, 0, tempArrayOutput.Length / 2);
-        Array.Reverse(tempArrayOutput, tempArrayOutput.Length / 2, tempArrayOutput.Length / 2);
-        output = new string(tempArrayOutput);
-    } else {
-        Array.Reverse(tempArrayOutput);
-        output = new string(tempArrayOutput) + input;
+    { var temp = input.ToCharArray();
+        for (int i = 0; i < temp.Length; i++) 
+            if ((temp[i] < 'a') || (temp[i] > 'z')) 
+                output += $"Неверный символ \"{temp[i]}\" на позиции {i+1}\n";
+        if (output.Length != 0) throw new Exception(output); 
     }
 
-    extend = output + extend;
+    var processed = process(input);
+
+    output = processed;
 
     int[] chars = new int['z' - 'a' + 1];
-    foreach(var i in output) chars[i - 'a']++;
+    foreach(var i in processed) chars[i - 'a']++;
     for (char i = 'a'; i <= 'z'; i++) {
         if (chars[i - 'a'] == 0) continue;
-        extend += $"\nсимвол {i} всречался в обработанной строке {chars[i - 'a']} раз";
+        output += $"\nсимвол {i} всречался в обработанной строке {chars[i - 'a']} раз";
     }
 
-    var first = output.IndexOfAny("eyuioa".ToCharArray());
-    var tmp = output.ToCharArray();
+    var first = processed.IndexOfAny("eyuioa".ToCharArray());
+    var tmp = processed.ToCharArray();
     Array.Reverse(tmp);
     var second = new string(tmp).IndexOfAny("eyuioa".ToCharArray());
-    string maxSubString = output.Substring(first, tmp.Length - second - first);
+    string maxSubString = processed.Substring(first, tmp.Length - second - first);
 
-    extend += $"\nНаибольшая подстрока {maxSubString}";
+    output += $"\nНаибольшая подстрока {maxSubString}";
 
-    return extend;
+
+    //extend += $"\nОтсортированная строка {}";
+
+    return output;
 }  
 }
 }
