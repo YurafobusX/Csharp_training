@@ -23,13 +23,19 @@ public static string? flipAndDuplex(string? input) {
         extend = new string(output) + input + extend;
     }
 
+    var first = extend.IndexOfAny("eyuioa".ToCharArray());
+    var tmp = extend.ToCharArray();
+    Array.Reverse(tmp);
+    var second = new string(tmp).IndexOfAny("eyuioa".ToCharArray());
+    string maxSubString = extend.Substring(first, tmp.Length - second - first);
+
     int[] chars = new int['z' - 'a' + 1];
     foreach(var i in extend) chars[i - 'a']++;
     for (char i = 'a'; i <= 'z'; i++) {
         if (chars[i - 'a'] == 0) continue;
         extend += $"\nсимвол {i} всречался в обработанной строке {chars[i - 'a']} раз";
     }
-    return extend;
+    return extend + $"\nНаибольшая подстрока {maxSubString}";
 }  
 }
 }
