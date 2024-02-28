@@ -37,6 +37,27 @@ private static string treeSort(in string input) {
     return tmp.ToString();
 }
 
+// Сортирует от begin (включительно) до end (не включая)
+private static void _quickSort (char[] input, int begin, int end) {
+if (begin >= end-1) return;
+int left = begin;
+int right = end - 1;
+char key = input[begin];
+while (right > left) {
+    if (input[right] >= key) {right--; continue;}
+    if (input[left] < key) {left++; continue;}
+    (input[right], input[left]) = (input[left], input[right]);
+}
+_quickSort(input, begin, left+1);
+_quickSort(input, left+1, end);
+}
+
+private static string quickSort(in string input) {
+    var tmp = input.ToCharArray();
+    _quickSort(tmp, 0, tmp.Length);
+    return new string(tmp);
+}
+
 private static string process(in string input) {
     var temp = input.ToCharArray();
     if (input.Length % 2 == 0) {
@@ -80,7 +101,7 @@ public static string? flipAndDuplex(in string? input) {
     output += $"\nНаибольшая подстрока {maxSubString}";
 
     output += $"\nОтсортированная строка методом TreeSort {treeSort(processed)}";
-    output += $"\nОтсортированная строка методом qSort {treeSort(processed)}";
+    output += $"\nОтсортированная строка методом qSort {quickSort(processed)}";
 
     return output;
 }  
