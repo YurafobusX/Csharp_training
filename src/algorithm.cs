@@ -103,6 +103,9 @@ public static string? flipAndDuplex(in string? input) {
     output += $"\nОтсортированная строка методом TreeSort {treeSort(processed)}";
     output += $"\nОтсортированная строка методом qSort {quickSort(processed)}";
 
+    //Очередной рефактор намечается
+    //var json = await (new HttpClient()).GetAsync($"http://www.randomnumberapi.com/api/v1.0/random?min=0&max={processed.Length - 1}&count=1");   
+
     return output;
 }  
 }
