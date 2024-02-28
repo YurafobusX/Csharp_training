@@ -10,6 +10,33 @@ public static class Algrorithm {
 
 //}
 
+private class Tree {
+        public Tree? left;
+        public Tree? right;
+        public char? key;
+
+        public Tree(char? ch) {key = ch;}
+
+        public override string ToString() {
+            return left?.ToString() + key?.ToString() + right?.ToString();
+        }
+
+        public void insert(Tree input) {
+            if (key == null) {this.key = input.key; this.left = input.left; this.right = input.right; return;} 
+            if (input.key < this.key) {
+                if (left == null) left = input; else left.insert(input);
+            } else {
+                if (right == null) right = input; else right.insert(input);
+            }
+        }
+    };
+
+private static string treeSort(in string input) {
+    Tree tmp = new Tree(null);
+    foreach(var i in input) tmp.insert(new Tree(i));
+    return tmp.ToString();
+}
+
 private static string process(in string input) {
     var temp = input.ToCharArray();
     if (input.Length % 2 == 0) {
@@ -52,8 +79,8 @@ public static string? flipAndDuplex(in string? input) {
 
     output += $"\nНаибольшая подстрока {maxSubString}";
 
-
-    //extend += $"\nОтсортированная строка {}";
+    output += $"\nОтсортированная строка методом TreeSort {treeSort(processed)}";
+    output += $"\nОтсортированная строка методом qSort {treeSort(processed)}";
 
     return output;
 }  
