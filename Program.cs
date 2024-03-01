@@ -4,12 +4,13 @@
 // первая задача
 try {
     var input = Console.ReadLine();
-    if (input == null) return;
+    if (input == null || input.Length == 0) return;
     Algrorithm.Algrorithm.check(input);
 
     var processed = Algrorithm.Algrorithm.process(input);
     var count = Algrorithm.Algrorithm.count(processed);
     var maxSubstring = Algrorithm.Algrorithm.getMaxSubstring(processed);
+    var withoutSybmol = (new Algrorithm.Async()).deleteRandomSymbol(processed);
     
 
     Console.Write(processed);
@@ -23,9 +24,9 @@ try {
     else
         Console.WriteLine($"Отсортированная строка методом qSort {Algrorithm.Algrorithm.quickSort(processed)}");
 
-    Console.WriteLine("");
+    Console.WriteLine($"Строка без случайного символа: {await withoutSybmol}");
 
-    //Console.WriteLine(Algrorithm.Algrorithm.flipAndDuplex(Console.ReadLine()));
+    
 } catch (Exception ex) {
     Console.WriteLine(ex.Message);
 }

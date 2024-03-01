@@ -1,6 +1,7 @@
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
+using System.Text.Json;
 
 namespace Algrorithm {
 public static class Algrorithm {
@@ -93,6 +94,20 @@ public static string getMaxSubstring(in string input) {
     var second = new string(tmp).IndexOfAny("eyuioa".ToCharArray());
     return input.Substring(first, tmp.Length - second - first);
 }
+}
 
+class Async {
+public async Task<string> deleteRandomSymbol(string input) {
+    var rand = 0;
+
+    try {
+        var json = JsonDocument.Parse(await (new HttpClient()).GetStringAsync($"http://www.randomnumberapi.com/api/v1.0/random?min=0&max={input.Length}&count=1"));
+        rand = json.RootElement[0].GetInt32();
+    } catch (Exception) {
+        rand = (new Random()).Next(input.Length);
+    }
+    
+    return input.Remove(rand, 1);
+}
 }
 }
