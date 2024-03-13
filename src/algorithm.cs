@@ -65,7 +65,8 @@ public static string process(in string input) {
 }
 
 
-public static void check(in string input) {
+public static void check(in string input, in IList<string> blacklist) {
+    if (blacklist.Contains(input)) throw new Exception("Слово в чёрном списке");
     var output = new string("");
     var temp = input.ToCharArray();
         for (int i = 0; i < temp.Length; i++) 
@@ -94,11 +95,11 @@ public static string getMaxSubstring(in string input) {
 }
 
 class Async {
-public async Task<string> deleteRandomSymbol(string input) {
+public async Task<string> deleteRandomSymbol(string input, string api) {
     var rand = 0;
 
     try {
-        var json = JsonDocument.Parse(await (new HttpClient()).GetStringAsync($"http://www.randomnumberapi.com/api/v1.0/random?min=0&max={input.Length}&count=1"));
+        var json = JsonDocument.Parse(await (new HttpClient()).GetStringAsync($"{api}/random?min=0&max={input.Length}&count=1"));
         rand = json.RootElement[0].GetInt32();
     } catch (Exception) {
         rand = (new Random()).Next(input.Length);

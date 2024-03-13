@@ -16,12 +16,15 @@ public class StringProcessingController : ControllerBase
     public async Task<IActionResult> Get(string input, string typeOfSort) {
         try {
             if (input == null || input.Length == 0) return Content("");
-            Algrorithm.Algrorithm.check(input);
+
+            var set = JsonSerializer.Deserialize<settings>(new StreamReader("appsettings.json").ReadToEnd());
+
+            Algrorithm.Algrorithm.check(input, set.Settings["BlackList"]);
 
             var processed = Algrorithm.Algrorithm.process(input);
             var count = Algrorithm.Algrorithm.count(processed);
             var maxSubstring = Algrorithm.Algrorithm.getMaxSubstring(processed);
-            var withoutSybmol = (new Algrorithm.Async()).deleteRandomSymbol(processed);
+            var withoutSybmol = new Algrorithm.Async().deleteRandomSymbol(processed, set.RandomApi);
 
             // "Введите 0 или любой другой символ (qSort или TreeSort) для выбора способа сортировки");
             var typeS = "qSort";
