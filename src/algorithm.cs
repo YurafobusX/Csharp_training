@@ -1,6 +1,4 @@
 using System.Numerics;
-using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using System.Text.Json;
 
 namespace Algrorithm {
@@ -76,23 +74,22 @@ public static void check(in string input) {
     if (output.Length != 0) throw new Exception(output); 
 }
 
-public static string count(in string input) {
-    var output = new string("");
+public static int[] count(in string input) {
     int[] chars = new int['z' - 'a' + 1];
     foreach(var i in input) chars[i - 'a']++;
-    for (char i = 'a'; i <= 'z'; i++) {
-        if (chars[i - 'a'] == 0) continue;
-        output += $"\nсимвол {i} всречался в обработанной строке {chars[i - 'a']} раз";
-    }
-    return output;
+    return chars;
 }
 
 public static string getMaxSubstring(in string input) {
-    var first = input.IndexOfAny("eyuioa".ToCharArray());
-    var tmp = input.ToCharArray();
-    Array.Reverse(tmp);
-    var second = new string(tmp).IndexOfAny("eyuioa".ToCharArray());
-    return input.Substring(first, tmp.Length - second - first);
+    try {
+        var first = input.IndexOfAny("eyuioa".ToCharArray());
+        var tmp = input.ToCharArray();
+        Array.Reverse(tmp);
+        var second = new string(tmp).IndexOfAny("eyuioa".ToCharArray());
+        return input.Substring(first, tmp.Length - second - first);
+    } catch (System.ArgumentOutOfRangeException) {
+        return "";
+    }
 }
 }
 
