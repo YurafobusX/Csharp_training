@@ -11,13 +11,15 @@ namespace app.Controllers;
 [Route("[controller]")]
 public class StringProcessingController : ControllerBase
 {
+    static int counter = 0;
+    settings set = JsonSerializer.Deserialize<settings>(new StreamReader("appsettings.json").ReadToEnd());
 
     [HttpGet("{input}/{typeOfSort}")]
     public async Task<IActionResult> Get(string input, string typeOfSort) {
+        counter++;
+        if (counter >  int.Parse(set.Settings["ParallelLimit"][0])) return StatusCode(503);
         try {
             if (input == null || input.Length == 0) return Content("");
-
-            var set = JsonSerializer.Deserialize<settings>(new StreamReader("appsettings.json").ReadToEnd());
 
             Algrorithm.Algrorithm.check(input, set.Settings["BlackList"]);
 
@@ -45,6 +47,8 @@ public class StringProcessingController : ControllerBase
             
         } catch (Exception ex) {
             return BadRequest(ex.Message);    
+        } finally {
+            counter--;
         }
     }
 }
